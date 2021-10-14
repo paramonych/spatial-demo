@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <meta property="og:locale" content="en_US" />
+      <meta property="og:locale:alternate" content="ru_RU" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="http://gazer.pro" />
+      <meta property="og:image" content="http://gazer.pro/logo.png" />
+      <meta property="og:site_name" content="HMM" />
+
+      <title>HMM</title>
+      <link href="css/style.min.css" rel="stylesheet" media="screen">
+      <script src="libs/babylon.2.3.js"></script>
+      <script src="libs/jquery-2.1.4.min.js"></script>
+      <script src="libs/jquery-ui.min.js"></script>
+      <script src="libs/underscore-min.js"></script>
+      <script src="libs/knockout-3.3.0.js"></script>
+      <script src="libs/EasePack.js"></script>
+      <script src="libs/TweenMax.js"></script>
+      <script src="libs/TimelineMax.js"></script>
+      <script src="libs/BezierPlugin.js"></script>
+      <script src="js/main.min.js"></script>
+      <!-- Yandex.Metrika counter -->
+        <script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter39573485 = new Ya.Metrika({ id:39573485, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true, ut:"noindex" }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); </script>
+        <noscript><div><img src="https://mc.yandex.ru/watch/39573485?ut=noindex" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+      <!-- /Yandex.Metrika counter -->
+   </head>
+
+   <body>
+     <canvas id="renderCanvas"></canvas>
+     <div id="sceneBlocker">Configuring the scene. Please wait.</div>
+     <button id="launch">PLAY</button>
+
+     <div id="boxSize" class="config-detail">
+       <label>Scene scale (&mu;m):</label>
+       <input type="number" size="3"  min="0.5" max="200" step="0.5"/>
+     </div>
+     <button id="setDendrits">RESET DENDRITS</button>
+
+     <div id="wavePower" class="config-detail">
+       <label>Active dendrits:</label>
+       <input type="number" size="3" min="1" step="1"/>
+     </div>
+     <div id="patternLimit" class="config-detail high-w">
+       <label>Pattern minimum:</label>
+       <input type="number" size="3" min="1" step="1"/>
+     </div>
+     <div id="transportDistance" class="config-detail high-w">
+       <label>Transport dist (&mu;m):</label>
+       <input type="number" size="3" min="1" step="1"/>
+     </div>
+     <div id="distressDistance" class="config-detail high-w">
+       <label>Distress dist (&mu;m):</label>
+       <input type="number" size="3" min="0" step="1"/>
+     </div>
+     <div id="wordLength" class="config-detail high-w">
+       <label>Word length:</label>
+       <input type="number" size="3" min="0" step="1"/>
+     </div>
+     <div id="vocabLength" class="config-detail high-w">
+       <label>Vocab length:</label>
+       <input type="number" size="3" min="0" step="1"/>
+     </div>
+     <button id="setSignal">INIT SIGNAL</button>
+
+     <div id="pinMaxLength" class="config-detail low-w">
+       <label>Spine length (&mu;m):</label>
+       <input type="number" size="3" min="0" step="0.1"/>
+     </div>
+     <div id="blastRadius" class="config-detail low-w">
+       <label>Spread radius (&mu;m):</label>
+       <input type="number" size="3" min="0" step="0.1"/>
+     </div>
+     <div id="blastPower" class="config-detail low-w">
+       <label>Caught synapces:</label>
+       <input type="number" size="3" min="1" step="1"/>
+     </div>
+     <button id="processWave" disabled="disabled" class="low-w">CONFIGURE</button>
+     <div id="keepSelected" class="config-detail">
+       <label>Keep selected:</label>
+       <input type="checkbox"/>
+     </div>
+
+     <div id="actualDendritsAmount" class="config-info">
+       <label>Actual dendrits amount: <span>0</span></label>
+     </div>
+     <div id="actualSynapcesAmount" class="config-info">
+       <label>Actual synapces amount: <span>0</span></label>
+     </div>
+     <div id="averageSynapcesDist" class="config-info">
+       <label>Avg. distance of synpces: 0.5 &mu;m</label>
+     </div>
+     <div id="averageSynapcesDens" class="config-info">
+       <label>Avg. density of synpces: 7 x 10<sup>8</sup> mm<sup>3</sup></label>
+     </div>
+
+     <div id="measure">
+       <div class="measure-value">Scale: <span>5</span>&nbsp;&mu;m</div>
+       <div class="scale">
+         <div class="top"></div>
+         <div class="bot"></div>
+       </div>
+       <div class="actual-density">
+         <label>Actual density of synapces: <span>0</span> x 10<sup>8</sup> mm<sup>3</sup></label>
+       </div>
+     </div>
+     <div id="resolution">
+       <label class="low">1-15&nbsp;&mu;m</label>
+       <label class="high active">15-50&nbsp;&mu;m</label>
+     </div>
+     <div id="powerBy" class="config-detail">
+       <label>Made by:</label>
+       <a href="https://ru.linkedin.com/in/dobrobot" target="_blank">
+         Anton Morozov
+       </a>
+     </div>
+
+     <div id="counter" style="display:none;">
+       <!--LiveInternet counter--><script type="text/javascript"><!--
+       document.write("<a href='//www.liveinternet.ru/click' "+
+       "target=_blank><img src='//counter.yadro.ru/hit?t44.6;r"+
+       escape(document.referrer)+((typeof(screen)=="undefined")?"":
+       ";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+       screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+       ";"+Math.random()+
+       "' alt='' title='LiveInternet' "+
+       "border='0' width='31' height='31'><\/a>")
+       //--></script><!--/LiveInternet-->
+     </div>
+   </body>
+</html>
